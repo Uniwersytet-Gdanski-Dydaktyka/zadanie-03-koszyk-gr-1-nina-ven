@@ -3,7 +3,7 @@
 
 | Termin oddania | Punkty     |
 |----------------|:-----------|
-| 14.05.2026  23:00   |  20 (+3 extra)       |
+| 21.05.2026  23:00   |  20 (+3 extra)       |
 
 --- 
 Przekroczenie terminu o **n** zajęć wiąże się z karą:
