@@ -20,7 +20,19 @@ public class Cart {
         return content.length;
     }
 
-    public double Value() {
+    public double OrginalValue() {
+        double value = 0.0;
+
+        if(SizeOfContent() !=0){
+            for( int i=0; i<SizeOfContent(); i++){
+                value+=content[i].getPrice();
+            }
+        }
+
+        return value;
+    }
+
+    public double FinalValue() {
         double value = 0.0;
 
         if(SizeOfContent() !=0){
@@ -34,14 +46,10 @@ public class Cart {
 
     public Product CheapestInCart() {
         if(SizeOfContent() != 0){
-            Product p=content[0];
+            Product[] products = Arrays.copyOf(content, SizeOfContent());
 
-            for( int i=0; i<SizeOfContent(); i++){
-                if(content[i].getDiscountPrice()<p.getDiscountPrice()){
-                    p=content[i];
-                }
-            }
-            return p;
+            Arrays.sort(products, Comparator.comparingDouble(Product::getDiscountPrice));
+            return products[0];
         }
         return null;
     }
@@ -60,14 +68,10 @@ public class Cart {
 
     public Product MostExpensiveInCart() {
         if(SizeOfContent() != 0){
-            Product p=content[0];
+            Product[] products = Arrays.copyOf(content, SizeOfContent());
 
-            for( int i=0; i<SizeOfContent(); i++){
-                if(content[i].getDiscountPrice()>p.getDiscountPrice()){
-                    p=content[i];
-                }
-            }
-            return p;
+            Arrays.sort(products, Comparator.comparingDouble(Product::getDiscountPrice).reversed());
+            return products[0];
         }
         return null;
     }

@@ -43,17 +43,31 @@ public class CartTest {
     }
 
     @Test
-    void valueTest(){
-        assertEquals(0.0, cart.Value());
+    void orginalValueTest(){
+        assertEquals(0.0, cart.OrginalValue());
 
         cart.addToCart(product1);
 
-        assertEquals(20.0, cart.Value());
+        assertEquals(20.0, cart.OrginalValue());
 
         cart.addToCart(product2);
 
-        assertEquals(70.0, cart.Value());
+        assertEquals(70.0, cart.OrginalValue());
+    }
 
+    @Test
+    void finalValueTest(){
+        assertEquals(0.0, cart.FinalValue());
+
+        cart.addToCart(product1);
+        product1.setDiscountPrice(product1.getDiscountPrice()/2);
+
+        assertEquals(10.0, cart.FinalValue());
+
+        cart.addToCart(product2);
+        product2.setDiscountPrice(product2.getDiscountPrice()/5);
+
+        assertEquals(20.0, cart.FinalValue());
     }
 
     @Test
