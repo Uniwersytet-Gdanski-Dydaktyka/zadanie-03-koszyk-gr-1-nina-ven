@@ -1,23 +1,24 @@
 package cart;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static cart.ProductComparators.*;
 
 public class Cart {
-    private Product[] content = {};
+    private final List<Product> content = new ArrayList<>();
 
-    public Product[] getContent() {
+    public List<Product> getContent() {
         return content;
     }
 
     public int SizeOfContent() {
-        return content.length;
+        return content.size();
     }
 
     public void sort(Comparator<Product> comparator) {
-        Arrays.sort(content, comparator);
+        content.sort(comparator);
     }
 
     public void Sort() {
@@ -25,44 +26,19 @@ public class Cart {
     }
 
     public void AddToCart(Product p) {
-        content = Arrays.copyOf(content, content.length + 1);
-        content[content.length - 1] = p;
+        content.add(p);
         Sort();
     }
 
-
     public void DeleteFromCart(Product p) {
-        int index = -1;
-
-        for (int i = 0; i < content.length; i++) {
-            if (content[i].equals(p)) {
-                index = i;
-                break;
-            }
-        }
-
-        if (index == -1) {
-            return;
-        }
-
-        Product[] newContent = new Product[content.length - 1];
-
-        for (int i = 0, j = 0; i < content.length; i++) {
-            if (i != index) {
-                newContent[j++] = content[i];
-            }
-        }
-
-        content = newContent;
+        content.remove(p);
     }
 
     public double OriginalValue() {
         double value = 0.0;
 
-        if(SizeOfContent() !=0){
-            for( int i=0; i<SizeOfContent(); i++){
-                value+=content[i].getPrice();
-            }
+        for (Product p : content) {
+            value += p.getPrice();
         }
 
         return value;
@@ -71,59 +47,51 @@ public class Cart {
     public double FinalValue() {
         double value = 0.0;
 
-        if(SizeOfContent() !=0){
-            for( int i=0; i<SizeOfContent(); i++){
-                value+=content[i].getDiscountPrice();
-            }
+        for (Product p : content) {
+            value += p.getDiscountPrice();
         }
 
         return value;
     }
 
     public Product CheapestInCart() {
-        if(SizeOfContent() != 0){
-            Product[] products = Arrays.copyOf(content, SizeOfContent());
+        if (SizeOfContent() == 0) return null;
 
-            Arrays.sort(products, Comparator.comparingDouble(Product::getDiscountPrice));
-            return products[0];
-        }
+        List<Product> copy = new ArrayList<>(content);
+        copy.sort(byDiscountPrice);
 
-        return null;
+        return copy.getFirst();
     }
 
-    public Product[] NCheapestInCart(int n) {
-        Product[] products = Arrays.copyOf(content, SizeOfContent());
+    public List<Product> NCheapestInCart(int n) {
+        List<Product> copy = new ArrayList<>(content);
+        copy.sort(byDiscountPrice);
 
-        Arrays.sort(products, Comparator.comparingDouble(Product::getDiscountPrice));
-
-        if (n > products.length) {
-            n = products.length;
+        if (n > copy.size()) {
+            n = copy.size();
         }
 
-        return Arrays.copyOf(products, n);
+        return copy.subList(0, n);
     }
 
     public Product MostExpensiveInCart() {
-        if(SizeOfContent() != 0){
-            Product[] products = Arrays.copyOf(content, SizeOfContent());
+        if (SizeOfContent() == 0) return null;
 
-            Arrays.sort(products, Comparator.comparingDouble(Product::getDiscountPrice).reversed());
-            return products[0];
-        }
+        List<Product> copy = new ArrayList<>(content);
+        copy.sort(byDiscountPrice.reversed());
 
-        return null;
+        return copy.getFirst();
     }
 
-    public Product[] NMostExpensiveInCart(int n) {
-        Product[] products = Arrays.copyOf(content, SizeOfContent());
+    public List<Product> NMostExpensiveInCart(int n) {
+        List<Product> copy = new ArrayList<>(content);
+        copy.sort(byDiscountPrice.reversed());
 
-        Arrays.sort(products, Comparator.comparingDouble(Product::getDiscountPrice).reversed());
-
-        if (n > products.length) {
-            n = products.length;
+        if (n > copy.size()) {
+            n = copy.size();
         }
 
-        return Arrays.copyOf(products, n);
+        return copy.subList(0, n);
     }
 
 

@@ -3,6 +3,8 @@ package cart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CartTest {
@@ -23,15 +25,15 @@ public class CartTest {
         cart.AddToCart(product1);
         cart.AddToCart(product1);
 
-        assertEquals(product1, cart.getContent()[0]);
-        assertEquals(product1, cart.getContent()[1]);
+        assertEquals(product1, cart.getContent().getFirst());
+        assertEquals(product1, cart.getContent().get(1));
 
         cart.DeleteFromCart(product1);
         cart.DeleteFromCart(product1);
 
         cart.AddToCart(product2);
 
-        assertEquals(product2, cart.getContent()[0]);
+        assertEquals(product2, cart.getContent().getFirst());
 
     }
 
@@ -105,18 +107,18 @@ public class CartTest {
 
     @Test
     void nCheapestInCart(){
-        assertArrayEquals(new Product[0],cart.NCheapestInCart(3));
+        assertEquals(List.of(),cart.NCheapestInCart(3));
 
         cart.AddToCart(product2);
         cart.AddToCart(product2);
         cart.AddToCart(product2);
 
-        assertArrayEquals(new Product[]{product2, product2}, cart.NCheapestInCart(2));
+        assertEquals(List.of(product2,product2), cart.NCheapestInCart(2));
 
         cart.AddToCart(product1);
         cart.AddToCart(product1);
 
-        assertArrayEquals(new Product[]{product1, product1, product2}, cart.NCheapestInCart(3));
+        assertEquals(List.of(product1,product1,product2), cart.NCheapestInCart(3));
 
     }
 
@@ -135,18 +137,18 @@ public class CartTest {
 
     @Test
     void nCMostExpensiveInCart(){
-        assertArrayEquals(new Product[0],cart.NMostExpensiveInCart(3));
+        assertEquals(List.of(),cart.NMostExpensiveInCart(3));
 
         cart.AddToCart(product1);
         cart.AddToCart(product1);
         cart.AddToCart(product1);
 
-        assertArrayEquals(new Product[]{product1, product1}, cart.NMostExpensiveInCart(2));
+        assertEquals(List.of(product1,product1), cart.NMostExpensiveInCart(2));
 
         cart.AddToCart(product2);
         cart.AddToCart(product2);
 
-        assertArrayEquals(new Product[]{product2, product2, product1}, cart.NMostExpensiveInCart(3));
+        assertEquals(List.of(product2,product2,product1), cart.NMostExpensiveInCart(3));
 
     }
 
@@ -155,17 +157,17 @@ public class CartTest {
         cart.AddToCart(product1);
         cart.AddToCart(product2);
 
-        assertArrayEquals(new Product[]{product2,product1}, cart.getContent());
+        assertEquals(List.of(product2, product1), cart.getContent());
 
         product2.setDiscountPrice(product2.getDiscountPrice()/5);
         cart.Sort();
 
-        assertArrayEquals(new Product[]{product1,product2}, cart.getContent());
+        assertEquals(List.of(product1, product2), cart.getContent());
 
         product2.setDiscountPrice(product2.getDiscountPrice()*2);
         cart.Sort();
 
-        assertArrayEquals(new Product[]{product2,product1}, cart.getContent());
+        assertEquals(List.of(product2, product1), cart.getContent());
     }
 
 
