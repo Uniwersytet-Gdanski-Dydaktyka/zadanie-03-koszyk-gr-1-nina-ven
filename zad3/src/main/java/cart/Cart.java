@@ -1,6 +1,7 @@
 package cart;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -99,6 +100,80 @@ public class Cart {
         }
 
         sortDefault();
+    }
+
+    private List<Product> copyProducts() {
+        List<Product> copy = new ArrayList<>();
+        for (Product p : content) {
+            copy.add(p.copy());
+        }
+        return copy;
+    }
+
+    private double simulate(List<Promotion> order) {
+        List<Product> productsCopy = copyProducts();
+
+        for (Product p : productsCopy) {
+            p.resetDiscount();
+        }
+
+        for (Promotion promo : order) {
+            promo.apply(productsCopy);
+        }
+
+        return productsCopy.stream()
+                .mapToDouble(Product::getDiscountPrice)
+                .sum();
+    }
+
+    private void permute(List<Promotion> arr, int k, List<List<Promotion>> result) {
+        if (k == arr.size()) {
+            result.add(new ArrayList<>(arr));
+        } else {
+            for (int i = k; i < arr.size(); i++) {
+                Collections.swap(arr, i, k);
+                permute(arr, k + 1, result);
+                Collections.swap(arr, i, k);
+            }
+        }
+    }
+
+    public double bestPriceWithPromotions() {
+        if (promotions.isEmpty()) {
+            return finalValue();
+        }
+
+        List<List<Promotion>> permutations = new ArrayList<>();
+        permute(new ArrayList<>(promotions), 0, permutations);
+
+        double best = Double.MAX_VALUE;
+
+        for (List<Promotion> order : permutations) {
+            double value = simulate(order);
+            if (value < best) {
+                best = value;
+            }
+        }
+
+        return best;
+    }
+
+    public List<Promotion> bestPromotionOrder() {
+        List<List<Promotion>> permutations = new ArrayList<>();
+        permute(new ArrayList<>(promotions), 0, permutations);
+
+        double best = Double.MAX_VALUE;
+        List<Promotion> bestOrder = List.of();
+
+        for (List<Promotion> order : permutations) {
+            double value = simulate(order);
+            if (value < best) {
+                best = value;
+                bestOrder = order;
+            }
+        }
+
+        return bestOrder;
     }
 
 }

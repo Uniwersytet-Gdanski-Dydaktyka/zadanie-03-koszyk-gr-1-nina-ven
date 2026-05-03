@@ -47,4 +47,14 @@ public class Product {
     public void resetDiscount() {
         this.discountPrice = this.price;
     }
+
+    public Product copy() {
+        Product p = new Product(this.code, this.name, this.price);
+        p.setDiscountPrice(this.discountPrice);
+        return p;
+    }
 }
+
+//moja klasa Product jest mutowalna z dwóch powodów
+//1. cena czy nazwa produktu moga się zmieniać
+//2. discountPrice nie miałoby zbyt sensu bez mutowalności

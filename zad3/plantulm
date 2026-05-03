@@ -1,0 +1,85 @@
+
+@startuml
+
+' ====== KLASY ======
+
+class Product {
+  - code : String
+  - name : String
+  - price : double
+  - discountPrice : double
+
+  + getCode() : String
+
+  + getName() : String
+  + setName(name : String)
+
+  + getPrice() : double
+  + setPrice(price : double)
+
+  + getDiscountPrice() : double
+  + setDiscountPrice(price : double)
+  + resetDiscount()
+
+  + copy() : Product
+}
+
+class Cart {
+  - content : List<Product>
+  - promotions : List<Promotion>
+
+  + addToCart(p : Product)
+  + removeFromCart(p : Product)
+  + size() : int
+
+  + sortDefault()
+  + sort(comparator : Comparator<Product>)
+
+  + originalValue() : double
+  + finalValue() : double
+
+  + cheapestInCart() : Product
+  + mostExpensiveInCart() : Product
+
+  + nCheapestInCart(n : int) : List<Product>
+  + nMostExpensiveInCart(n : int) : List<Product>
+
+  + addPromotion(p : Promotion)
+  + applyPromotions()
+
+  + bestPriceWithPromotions() : double
+  + bestPromotionOrder() : List<Promotion>
+}
+
+interface Promotion {
+  + apply(products : List<Product>)
+}
+
+class Over300DiscountPromotion {
+  + apply(products : List<Product>)
+}
+
+class Buy2Get1BonusPromotion {
+  + apply(products : List<Product>)
+}
+
+class FreeMugPromotion {
+  + apply(products : List<Product>)
+}
+
+class CouponPromotion {
+  - productCode : String
+  + apply(products : List<Product>)
+}
+
+' ====== RELACJE ======
+
+Cart "1" o-- "*" Product : contains
+Cart "1" o-- "*" Promotion : uses
+
+Promotion <|.. Over300DiscountPromotion
+Promotion <|.. Buy2Get1BonusPromotion
+Promotion <|.. FreeMugPromotion
+Promotion <|.. CouponPromotion
+
+@enduml
