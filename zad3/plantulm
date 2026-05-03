@@ -49,6 +49,10 @@ class Cart {
 
   + bestPriceWithPromotions() : double
   + bestPromotionOrder() : List<Promotion>
+
+  - simulate(order : List<Promotion>) : double
+  - permute(list : List<Promotion>, k : int, result : List<List<Promotion>>)
+  - copyProducts() : List<Product>
 }
 
 interface Promotion {
