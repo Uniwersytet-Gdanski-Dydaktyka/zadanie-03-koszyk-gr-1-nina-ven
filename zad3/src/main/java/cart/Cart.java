@@ -5,10 +5,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import static cart.ProductComparators.*;
+import cart.promotion.Promotion;
 
 public class Cart {
 
     private final List<Product> content = new ArrayList<>();
+    private final List<Promotion> promotions = new ArrayList<>();
 
     public List<Product> getContent() {
         return List.copyOf(content);
@@ -80,7 +82,23 @@ public class Cart {
         return new ArrayList<>(sorted.subList(0, Math.min(n, sorted.size())));
     }
 
+    public void addPromotion(Promotion promotion) {
+        if (promotion == null) {
+            throw new IllegalArgumentException("Promotion cannot be null");
+        }
+        promotions.add(promotion);
+    }
 
+    public void applyPromotions() {
+        for (Product p : content) {
+            p.resetDiscount();
+        }
 
+        for (Promotion promotion : promotions) {
+            promotion.apply(content);
+        }
+
+        sortDefault();
+    }
 
 }
