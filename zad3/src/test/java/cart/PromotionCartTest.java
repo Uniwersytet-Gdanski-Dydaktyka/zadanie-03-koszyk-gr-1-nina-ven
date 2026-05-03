@@ -29,13 +29,11 @@ public class PromotionCartTest {
 
         assertEquals(0.0, cart.finalValue());
 
-
         cart.addToCart(product1);
         cart.addToCart(product3);
         cart.applyPromotions();
 
         assertEquals(320.0, cart.finalValue());
-
 
         cart.addToCart(product2);
         cart.applyPromotions();
@@ -49,7 +47,6 @@ public class PromotionCartTest {
         cart.applyPromotions();
 
         assertEquals(0 , cart.size());
-
 
         cart.addToCart(product2);
         cart.applyPromotions();
@@ -120,7 +117,7 @@ public class PromotionCartTest {
     }
 
     @Test
-    void bestPromotionOrderBasicTest1(){
+    void bestPromotionOrderBasicTest(){
         assertEquals(List.of(), cart.bestPromotionOrder());
 
         cart.addPromotion(new CouponPromotion("0001"));
@@ -131,11 +128,30 @@ public class PromotionCartTest {
         cart.addToCart(product1);
 
         assertEquals(List.of( cart.getPromotions().getFirst(), cart.getPromotions().get(1),cart.getPromotions().get(2)), cart.bestPromotionOrder());
+    }
+
+    @Test
+    void bestPromotionOrderCupBefore21(){
+        cart.addPromotion(new FreeMugPromotion());
+        cart.addPromotion(new Buy2Get1BonusPromotion());
+        cart.addToCart(product3);
+        cart.addToCart(product2);
+        cart.addToCart(product1);
+
+        assertEquals(List.of(cart.getPromotions().get(1), cart.getPromotions().get(0)), cart.bestPromotionOrder());
+    }
+
+    @Test
+    void bestPromotionOrder21before300Test(){
+        Product product4 = new Product("0004", "torebka", 101.0);
+        cart.addToCart(product4.copy());
+        cart.addToCart(product4.copy());
+        cart.addToCart(product4.copy());
 
         cart.addPromotion(new Buy2Get1BonusPromotion());
+        cart.addPromotion(new Over300Promotion());
 
-        assertEquals(List.of( cart.getPromotions().getFirst(), cart.getPromotions().get(2),cart.getPromotions().get(3), cart.getPromotions().get(1)) , cart.bestPromotionOrder());
-
+        assertEquals(List.of( cart.getPromotions().get(1), cart.getPromotions().get(0)), cart.bestPromotionOrder());
     }
 
 }

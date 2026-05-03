@@ -8,7 +8,7 @@ public class Over300Promotion implements Promotion {
     @Override
     public void apply(List<Product> products) {
         double sum = products.stream()
-                .mapToDouble(Product::getPrice)
+                .mapToDouble(Product::getDiscountPrice)
                 .sum();
 
         if (sum > 300) {
