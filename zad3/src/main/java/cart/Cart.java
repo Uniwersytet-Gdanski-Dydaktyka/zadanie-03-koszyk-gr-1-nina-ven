@@ -7,13 +7,14 @@ import java.util.List;
 import static cart.ProductComparators.*;
 
 public class Cart {
+
     private final List<Product> content = new ArrayList<>();
 
     public List<Product> getContent() {
-        return content;
+        return List.copyOf(content);
     }
 
-    public int SizeOfContent() {
+    public int size() {
         return content.size();
     }
 
@@ -21,77 +22,62 @@ public class Cart {
         content.sort(comparator);
     }
 
-    public void Sort() {
+    public void sortDefault() {
         sort(byDiscountPrice.reversed().thenComparing(byName));
     }
 
-    public void AddToCart(Product p) {
+    public void addToCart(Product p) {
+        if (p == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
         content.add(p);
-        Sort();
+        sortDefault();
     }
 
-    public void DeleteFromCart(Product p) {
+    public void deleteFromCart(Product p) {
         content.remove(p);
     }
 
-    public double OriginalValue() {
-        double value = 0.0;
-
-        for (Product p : content) {
-            value += p.getPrice();
-        }
-
-        return value;
+    public double originalValue() {
+        return content.stream()
+                .mapToDouble(Product::getPrice)
+                .sum();
     }
 
-    public double FinalValue() {
-        double value = 0.0;
-
-        for (Product p : content) {
-            value += p.getDiscountPrice();
-        }
-
-        return value;
+    public double finalValue() {
+        return content.stream()
+                .mapToDouble(Product::getDiscountPrice)
+                .sum();
     }
 
-    public Product CheapestInCart() {
-        if (SizeOfContent() == 0) return null;
-
+    private List<Product> sortedCopy(Comparator<Product> comparator) {
         List<Product> copy = new ArrayList<>(content);
-        copy.sort(byDiscountPrice);
-
-        return copy.getFirst();
+        copy.sort(comparator);
+        return copy;
     }
 
-    public List<Product> NCheapestInCart(int n) {
-        List<Product> copy = new ArrayList<>(content);
-        copy.sort(byDiscountPrice);
-
-        if (n > copy.size()) {
-            n = copy.size();
-        }
-
-        return copy.subList(0, n);
+    public Product cheapestInCart() {
+        return content.isEmpty() ? null :
+                sortedCopy(byDiscountPrice).getFirst();
     }
 
-    public Product MostExpensiveInCart() {
-        if (SizeOfContent() == 0) return null;
+    public List<Product> nCheapestInCart(int n) {
+        if (n <= 0) return List.of();
 
-        List<Product> copy = new ArrayList<>(content);
-        copy.sort(byDiscountPrice.reversed());
-
-        return copy.getFirst();
+        List<Product> sorted = sortedCopy(byDiscountPrice);
+        return new ArrayList<>(sorted.subList(0, Math.min(n, sorted.size())));
     }
 
-    public List<Product> NMostExpensiveInCart(int n) {
-        List<Product> copy = new ArrayList<>(content);
-        copy.sort(byDiscountPrice.reversed());
+    public Product mostExpensiveInCart() {
+        return content.isEmpty() ? null :
+                sortedCopy(byDiscountPrice.reversed()).getFirst();
+    }
 
-        if (n > copy.size()) {
-            n = copy.size();
-        }
+    public List<Product> nMostExpensiveInCart(int n) {
+        if (n <= 0) return List.of();
 
-        return copy.subList(0, n);
+        List<Product> sorted = sortedCopy(byDiscountPrice.reversed());
+        return new ArrayList<>(sorted.subList(0, Math.min(n, sorted.size())));
     }
 
 

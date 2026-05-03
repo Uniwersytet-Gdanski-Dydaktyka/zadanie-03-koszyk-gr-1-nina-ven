@@ -7,6 +7,7 @@ public class Product {
     private double discountPrice;
 
     public Product(String code, String name, double price) {
+        if( price < 0 ) {price = 0.0;}
         this.code = code;
         this.name = name;
         this.price = price;
@@ -30,7 +31,9 @@ public class Product {
     }
 
     public void setPrice(double price) {
+        if( price < 0 ) {price=0.0;}
         this.price = price;
+        this.discountPrice = price;
     }
 
     public double getDiscountPrice() {
@@ -39,5 +42,9 @@ public class Product {
 
     public void setDiscountPrice(double discountPrice) {
         this.discountPrice = discountPrice;
+    }
+
+    public void resetDiscount() {
+        this.discountPrice = this.price;
     }
 }

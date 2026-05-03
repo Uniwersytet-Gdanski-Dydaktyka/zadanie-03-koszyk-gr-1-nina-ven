@@ -22,150 +22,165 @@ public class CartTest {
 
     @Test
     void addToCartTest(){
-        cart.AddToCart(product1);
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
+        cart.addToCart(product1);
 
         assertEquals(product1, cart.getContent().getFirst());
         assertEquals(product1, cart.getContent().get(1));
 
-        cart.DeleteFromCart(product1);
-        cart.DeleteFromCart(product1);
+        cart.deleteFromCart(product1);
+        cart.deleteFromCart(product1);
 
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
 
         assertEquals(product2, cart.getContent().getFirst());
 
     }
 
     @Test
+    void deleteFromCartTest(){
+        cart.addToCart(product1);
+        cart.addToCart(product1);
+        cart.deleteFromCart(product1);
+
+        assertEquals(product1, cart.getContent().getFirst());
+        assertEquals(1 ,cart.size());
+
+        cart.deleteFromCart(product1);
+
+        assertEquals(0 ,cart.size());
+
+    }
+
+    @Test
     void sizeOfContentTest(){
-        assertEquals(0, cart.SizeOfContent());
+        assertEquals(0, cart.size());
 
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
 
-        assertEquals(1, cart.SizeOfContent());
+        assertEquals(1, cart.size());
 
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
 
-        assertEquals(2, cart.SizeOfContent());
+        assertEquals(2, cart.size());
 
-        cart.DeleteFromCart(product1);
-        cart.DeleteFromCart(product2);
+        cart.deleteFromCart(product1);
+        cart.deleteFromCart(product2);
 
-        assertEquals(0, cart.SizeOfContent());
+        assertEquals(0, cart.size());
     }
 
     @Test
     void originalValueTest(){
-        assertEquals(0.0, cart.OriginalValue());
+        assertEquals(0.0, cart.originalValue());
 
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
 
-        assertEquals(20.0, cart.OriginalValue());
+        assertEquals(20.0, cart.originalValue());
 
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
 
-        assertEquals(70.0, cart.OriginalValue());
+        assertEquals(70.0, cart.originalValue());
 
-        cart.DeleteFromCart(product2);
+        cart.deleteFromCart(product2);
 
-        assertEquals(20.0, cart.OriginalValue());
+        assertEquals(20.0, cart.originalValue());
     }
 
     @Test
     void finalValueTest(){
-        assertEquals(0.0, cart.FinalValue());
+        assertEquals(0.0, cart.finalValue());
 
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
         product1.setDiscountPrice(product1.getDiscountPrice()/2);
 
-        assertEquals(10.0, cart.FinalValue());
+        assertEquals(10.0, cart.finalValue());
 
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
         product2.setDiscountPrice(product2.getDiscountPrice()/5);
-        cart.Sort();
+        cart.sortDefault();
 
-        assertEquals(20.0, cart.FinalValue());
+        assertEquals(20.0, cart.finalValue());
 
-        cart.DeleteFromCart(product2);
+        cart.deleteFromCart(product2);
 
-        assertEquals(10.0, cart.FinalValue());
+        assertEquals(10.0, cart.finalValue());
     }
 
     @Test
     void cheapestInCartTest(){
-        assertNull(cart.CheapestInCart());
+        assertNull(cart.cheapestInCart());
 
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
 
-        assertEquals(product2, cart.CheapestInCart());
+        assertEquals(product2, cart.cheapestInCart());
 
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
 
-        assertEquals(product1, cart.CheapestInCart());
+        assertEquals(product1, cart.cheapestInCart());
     }
 
     @Test
     void nCheapestInCart(){
-        assertEquals(List.of(),cart.NCheapestInCart(3));
+        assertEquals(List.of(),cart.nCheapestInCart(3));
 
-        cart.AddToCart(product2);
-        cart.AddToCart(product2);
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
+        cart.addToCart(product2);
+        cart.addToCart(product2);
 
-        assertEquals(List.of(product2,product2), cart.NCheapestInCart(2));
+        assertEquals(List.of(product2,product2), cart.nCheapestInCart(2));
 
-        cart.AddToCart(product1);
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
+        cart.addToCart(product1);
 
-        assertEquals(List.of(product1,product1,product2), cart.NCheapestInCart(3));
+        assertEquals(List.of(product1,product1,product2), cart.nCheapestInCart(3));
 
     }
 
     @Test
     void mostExpensiveInCartTest(){
-        assertNull(cart.MostExpensiveInCart());
+        assertNull(cart.mostExpensiveInCart());
 
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
 
-        assertEquals(product1, cart.MostExpensiveInCart());
+        assertEquals(product1, cart.mostExpensiveInCart());
 
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
 
-        assertEquals(product2, cart.MostExpensiveInCart());
+        assertEquals(product2, cart.mostExpensiveInCart());
     }
 
     @Test
     void nCMostExpensiveInCart(){
-        assertEquals(List.of(),cart.NMostExpensiveInCart(3));
+        assertEquals(List.of(),cart.nMostExpensiveInCart(3));
 
-        cart.AddToCart(product1);
-        cart.AddToCart(product1);
-        cart.AddToCart(product1);
+        cart.addToCart(product1);
+        cart.addToCart(product1);
+        cart.addToCart(product1);
 
-        assertEquals(List.of(product1,product1), cart.NMostExpensiveInCart(2));
+        assertEquals(List.of(product1,product1), cart.nMostExpensiveInCart(2));
 
-        cart.AddToCart(product2);
-        cart.AddToCart(product2);
+        cart.addToCart(product2);
+        cart.addToCart(product2);
 
-        assertEquals(List.of(product2,product2,product1), cart.NMostExpensiveInCart(3));
+        assertEquals(List.of(product2,product2,product1), cart.nMostExpensiveInCart(3));
 
     }
 
     @Test
     void sortTest(){
-        cart.AddToCart(product1);
-        cart.AddToCart(product2);
+        cart.addToCart(product1);
+        cart.addToCart(product2);
 
         assertEquals(List.of(product2, product1), cart.getContent());
 
         product2.setDiscountPrice(product2.getDiscountPrice()/5);
-        cart.Sort();
+        cart.sortDefault();
 
         assertEquals(List.of(product1, product2), cart.getContent());
 
         product2.setDiscountPrice(product2.getDiscountPrice()*2);
-        cart.Sort();
+        cart.sortDefault();
 
         assertEquals(List.of(product2, product1), cart.getContent());
     }
