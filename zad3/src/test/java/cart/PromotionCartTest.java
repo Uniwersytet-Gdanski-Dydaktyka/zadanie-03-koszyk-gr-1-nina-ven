@@ -4,6 +4,8 @@ import cart.promotion.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PromotionCartTest {
@@ -115,6 +117,24 @@ public class PromotionCartTest {
         cart.applyPromotions();
 
         assertEquals(488.3, cart.finalValue());
+    }
+
+    @Test
+    void bestPromotionOrderBasicTest1(){
+        assertEquals(List.of(), cart.bestPromotionOrder());
+
+        cart.addPromotion(new CouponPromotion("0001"));
+        cart.addPromotion(new FreeMugPromotion());
+        cart.addPromotion(new Over300Promotion());
+        cart.addToCart(product3);
+        cart.addToCart(product2);
+        cart.addToCart(product1);
+
+        assertEquals(List.of( cart.getPromotions().getFirst(), cart.getPromotions().get(1),cart.getPromotions().get(2)), cart.bestPromotionOrder());
+
+        cart.addPromotion(new Buy2Get1BonusPromotion());
+
+        assertEquals(List.of( cart.getPromotions().getFirst(), cart.getPromotions().get(2),cart.getPromotions().get(3), cart.getPromotions().get(1)) , cart.bestPromotionOrder());
 
     }
 

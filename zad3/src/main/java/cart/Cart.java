@@ -17,6 +17,10 @@ public class Cart {
         return List.copyOf(content);
     }
 
+    public List<Promotion> getPromotions() {
+        return List.copyOf(promotions);
+    }
+
     public int size() {
         return content.size();
     }
@@ -136,26 +140,6 @@ public class Cart {
                 Collections.swap(arr, i, k);
             }
         }
-    }
-
-    public double bestPriceWithPromotions() {
-        if (promotions.isEmpty()) {
-            return finalValue();
-        }
-
-        List<List<Promotion>> permutations = new ArrayList<>();
-        permute(new ArrayList<>(promotions), 0, permutations);
-
-        double best = Double.MAX_VALUE;
-
-        for (List<Promotion> order : permutations) {
-            double value = simulate(order);
-            if (value < best) {
-                best = value;
-            }
-        }
-
-        return best;
     }
 
     public List<Promotion> bestPromotionOrder() {

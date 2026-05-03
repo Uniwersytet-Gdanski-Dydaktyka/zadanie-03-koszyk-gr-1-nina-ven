@@ -28,8 +28,12 @@ class Cart {
   - content : List<Product>
   - promotions : List<Promotion>
 
+  + getContent() : List<Product>
+  + getPromotions() : List<Promotion>
+
   + addToCart(p : Product)
   + removeFromCart(p : Product)
+
   + size() : int
 
   + sortDefault()
@@ -47,11 +51,11 @@ class Cart {
   + addPromotion(p : Promotion)
   + applyPromotions()
 
-  + bestPriceWithPromotions() : double
   + bestPromotionOrder() : List<Promotion>
 
   - simulate(order : List<Promotion>) : double
   - permute(list : List<Promotion>, k : int, result : List<List<Promotion>>)
+
   - copyProducts() : List<Product>
 }
 
