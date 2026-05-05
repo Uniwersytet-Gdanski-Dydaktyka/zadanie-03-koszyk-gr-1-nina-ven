@@ -1,6 +1,4 @@
-
 @startuml
-
 ' ====== KLASY ======
 
 class Product {
@@ -29,6 +27,7 @@ class Cart {
   - promotions : List<Promotion>
 
   + getContent() : List<Product>
+
   + getPromotions() : List<Promotion>
 
   + addToCart(p : Product)
@@ -54,9 +53,12 @@ class Cart {
   + bestPromotionOrder() : List<Promotion>
 
   - simulate(order : List<Promotion>) : double
+
   - permute(list : List<Promotion>, k : int, result : List<List<Promotion>>)
 
   - copyProducts() : List<Product>
+
+  - sortedCopy(comparator : Comparator<Product>) : List<Product>
 }
 
 interface Promotion {
@@ -89,5 +91,4 @@ Promotion <|.. Over300DiscountPromotion
 Promotion <|.. Buy2Get1BonusPromotion
 Promotion <|.. FreeMugPromotion
 Promotion <|.. CouponPromotion
-
 @enduml

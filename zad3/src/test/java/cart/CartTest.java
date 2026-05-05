@@ -185,8 +185,4 @@ public class CartTest {
         assertEquals(List.of(product2, product1), cart.getContent());
     }
 
-
-
-
-
 }

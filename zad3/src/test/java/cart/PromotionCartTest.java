@@ -23,6 +23,30 @@ public class PromotionCartTest {
     }
 
     @Test
+    void addPromotionTest(){
+        cart.addPromotion(new Buy2Get1BonusPromotion());
+
+        assertEquals(1, cart.getPromotions().size());
+    }
+
+    @Test
+    void applyPromotionTest(){
+        cart.addToCart(product1);
+        cart.addToCart(product2);
+        cart.addToCart(product3);
+
+        cart.addPromotion(new Buy2Get1BonusPromotion());
+        cart.applyPromotions();
+
+        assertEquals(500.0, cart.finalValue());
+
+        cart.addPromotion(new Over300Promotion());
+        cart.applyPromotions();
+
+        assertEquals(475,  cart.finalValue());
+    }
+
+    @Test
     void buy2Get1BonusPromotionTest(){
         cart.addPromotion(new Buy2Get1BonusPromotion());
         cart.applyPromotions();
@@ -153,5 +177,7 @@ public class PromotionCartTest {
 
         assertEquals(List.of( cart.getPromotions().get(1), cart.getPromotions().get(0)), cart.bestPromotionOrder());
     }
+
+
 
 }

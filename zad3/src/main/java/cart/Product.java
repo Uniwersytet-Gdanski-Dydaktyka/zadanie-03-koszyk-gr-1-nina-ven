@@ -41,6 +41,7 @@ public class Product {
     }
 
     public void setDiscountPrice(double discountPrice) {
+        if( discountPrice < 0 ) {discountPrice = this.discountPrice;}
         this.discountPrice = discountPrice;
     }
 
