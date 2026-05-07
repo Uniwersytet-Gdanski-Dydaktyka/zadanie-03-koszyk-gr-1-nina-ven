@@ -11,7 +11,7 @@ import cart.promotion.Promotion;
 public class Cart {
 
     private final List<Product> content = new ArrayList<>();
-    private final List<Promotion> promotions = new ArrayList<>();
+    private List<Promotion> promotions = new ArrayList<>();
 
     public List<Product> getContent() {
         return List.copyOf(content);
@@ -157,6 +157,7 @@ public class Cart {
             }
         }
 
+        this.promotions = bestOrder;
         return bestOrder;
     }
 
